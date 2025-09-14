@@ -1,0 +1,21 @@
+# for jupyter notebook
+jupyter
+
+# for modeling
+torch
+torchvision
+
+# for spiking neural network
+snntorch
+
+# for numerical operations
+numpy
+
+# for plotting and visualization
+matplotlib
+
+# for satellite image processing
+rasterio
+
+#  for file path
+glob

@@ -1,0 +1,15 @@
+# Ignore the Python virtual environment folder
+my-base-env/
+
+# Ignore Python bytecode files
+pycache/
+*.pyc
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Ignore sensitive files 
+*.env
+
+# Ignore data folders
+train/
