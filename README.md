@@ -17,7 +17,7 @@ This project uses the proprietary dataset from the GlacierHack 2025 competition.
 
 ## Progress
 
-The current codebase includes two main Jupyter Notebooks:
+The current codebase includes 3 Jupyter Notebooks:
 ###### week1:
     visual_1.ipynb: Tryig out visulization of one image.
     week1_eda.ipynb: Demonstrates the initial exploratory data analysis and the core logic for loading and stacking the 5-band images from the complex file structure.
