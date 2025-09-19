@@ -10,13 +10,15 @@
 
 ## Why is the DataLoader so important?
 #### While we could have loaded all the data into a big list, using a DataLoader is the professional standard for two critical reasons:
-  Memory Efficiency:  
-    Instead of loading all 25 high-resolution images into RAM at once, it loads them in small batches (e.g., 4 at a time). 
-    This allows us to train models on datasets that are much larger than our computer's memory.
+Memory Efficiency:  
 
-  Better Training:
-    The DataLoader automatically shuffles the data every epoch (training cycle).
-    This randomization is crucial for preventing the model from getting "stuck" and helps it learn more effectively.
+  Instead of loading all 25 high-resolution images into RAM at once, it loads them in small batches (e.g., 4 at a time). 
+  This allows us to train models on datasets that are much larger than our computer's memory.
+
+Better Training:
+  
+  The DataLoader automatically shuffles the data every epoch (training cycle).
+  This randomization is crucial for preventing the model from getting "stuck" and helps it learn more effectively.
 
 ## Outcome
 #### We now have a train_loader and a val_loader that can efficiently feed batches of pre-processed, 5-channel image tensors and their corresponding masks to any PyTorch model.
