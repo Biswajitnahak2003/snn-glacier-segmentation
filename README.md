@@ -4,16 +4,16 @@
 
 ## Project Status
 
-    Week 1 (Completed): Environment setup, data exploration, and development of a robust data loading pipeline using glob and rasterio to handle the multi-folder data structure.
-    Week 2 (completed): Creation of a custom PyTorch Dataset and DataLoader to prepare the data for model training.
-    week 3 (upcoming): we will create a baseline u-net model
+Week 1 (Completed): Environment setup, data exploration, and development of a robust data loading pipeline using glob and rasterio to handle the multi-folder data structure.
+Week 2 (completed): Creation of a custom PyTorch Dataset and DataLoader to prepare the data for model training.
+week 3 (upcoming): we will create a baseline u-net model
 
 ## Dataset
 This project uses the proprietary dataset from the GlacierHack 2025 competition.
 
-    Structure: The dataset consists of 25 multi-band satellite images. Each image is composed of 5 spectral bands, stored as separate .tif files in their respective folders (Band1 through Band5).
-    Labels: Ground truth segmentation masks are provided in the label folder.
-    Access: Due to its proprietary nature, the train/ directory is not included in this repository. To run this project, the train/ folder must be acquired and placed in the root of this project directory.
+Structure: The dataset consists of 25 multi-band satellite images. Each image is composed of 5 spectral bands, stored as separate .tif files in their respective folders (Band1 through Band5).
+Labels: Ground truth segmentation masks are provided in the label folder.
+Access: Due to its proprietary nature, the train/ directory is not included in this repository. To run this project, the train/ folder must be acquired and placed in the root of this project directory.
 
 ## Progress
 
@@ -26,13 +26,13 @@ The current codebase includes 3 Jupyter Notebooks:
 
 ## Next Steps
 
-    Week 3: Implement a baseline U-Net model in PyTorch.
+Week 3: Implement a baseline U-Net model in PyTorch.
 
-    Week 4: Train and evaluate the baseline U-Net to establish a performance benchmark (MCC score).
+Week 4: Train and evaluate the baseline U-Net to establish a performance benchmark (MCC score).
 
-    Week 5-8: Convert the U-Net to a Spiking U-Net (S-U-Net) using snnTorch, train it, and compare its performance and efficiency against the baseline.
+Week 5-8: Convert the U-Net to a Spiking U-Net (S-U-Net) using snnTorch, train it, and compare its performance and efficiency against the baseline.
 
-    and more 
+and more 
 
 ## Author
     
