@@ -14,7 +14,7 @@
     Instead of loading all 25 high-resolution images into RAM at once, it loads them in small batches (e.g., 4 at a time). 
     This allows us to train models on datasets that are much larger than our computer's memory.
 
-  Better Training: 
+  Better Training:
     The DataLoader automatically shuffles the data every epoch (training cycle).
     This randomization is crucial for preventing the model from getting "stuck" and helps it learn more effectively.
 
