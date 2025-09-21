@@ -40,5 +40,5 @@ and more
 
 ## Author
     
-    Biswajit Nahak
-    B.Tech | ETC | @IIIT Bhubaneswar
+Biswajit Nahak
+B.Tech | ETC | @IIIT Bhubaneswar
