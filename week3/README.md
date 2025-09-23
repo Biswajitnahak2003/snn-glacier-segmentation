@@ -19,62 +19,62 @@
   We use the powerful albumentations library inside our GlacierDataset class.
   For each image in our training set, we randomly apply the following transformations on-the-fly:
 
-    HorizontalFlip: Flips the image and mask left-to-right.
+  - HorizontalFlip: Flips the image and mask left-to-right.
 
-    VerticalFlip: Flips the image and mask upside-down.
+  - VerticalFlip: Flips the image and mask upside-down.
 
-    RandomRotate90: Randomly rotates the image and mask by 90, 180, or 270 degrees.
+  - RandomRotate90: Randomly rotates the image and mask by 90, 180, or 270 degrees.
 
 #### Part 2: U-Net Model Architecture
 
 This diagram outlines the flow of a 5-channel satellite image through our U-Net to produce the final 1-channel segmentation mask.
 
-                                     Input Image (5, 256, 256)
-                                               |
-                                               V
-+------------------------------------------+   |   +---------------------------------------------+
-|           ENCODER (Contracting Path)       |   |   |           DECODER (Expanding Path)          |
-|                                          |   |   |                                             |
-|   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
-|   `skip1` -> (64 channels, 256x256) -----|---|---|----------------------> [Concatenate] |
-|                |                         |   |   |                               ^               |
-|                V                         |   |   |                               |               |
-|           [MaxPool 2x2]                  |   |   |                      [Up-Conv 2x2]              |
-|                |                         |   |   |                               |               |
-|                V                         |   |   |   (128 channels, 128x128) <- `d2`            |
-|   (64 channels, 128x128)                 |   |   |                               |               |
-|                |                         |   |   |                               |               |
-|   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
-|   `skip2` -> (128 channels, 128x128) ----|---|--> [Concatenate]                         |
-|                |                         |   |   ^                                     |
-|                V                         |   |   |                                     |
-|           [MaxPool 2x2]                  |   |   [Up-Conv 2x2]                         |
-|                |                         |   |   |                                     |
-|                V                         |   |   |   (256 channels, 64x64) <- `b`          |
-|   (128 channels, 64x64)                  |   |                                         |
-|                                          |   |                                         |
-+------------------------------------------+   |   +---------------------------------------------+
-                                               |
-                                               V
-                               +----------------------------------+
-                               | BOTTLENECK                       |
-                               |                                  |
-                               | [Conv Block x2, BatchNorm, ReLU] |
-                               | `b` -> (256 channels, 64x64)     |
-                               +----------------------------------+
-                                               |
-                                               V
-                               +----------------------------------+
-                               | OUTPUT                           |
-                               |                                  |
-                               | [1x1 Conv] -> (1 channel, 256x256)|
-                               |      |                           |
-                               |      V                           |
-                               | [Sigmoid Activation]             |
-                               +----------------------------------+
-                                               |
-                                               V
-                                    Final Mask (1, 256, 256)
+                                         Input Image (5, 256, 256)
+                                                   |
+                                                   V
+    +------------------------------------------+   |   +---------------------------------------------+
+    |           ENCODER (Contracting Path)       |   |   |           DECODER (Expanding Path)          |
+    |                                          |   |   |                                             |
+    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
+    |   `skip1` -> (64 channels, 256x256) -----|---|---|----------------------> [Concatenate] |
+    |                |                         |   |   |                               ^               |
+    |                V                         |   |   |                               |               |
+    |           [MaxPool 2x2]                  |   |   |                      [Up-Conv 2x2]              |
+    |                |                         |   |   |                               |               |
+    |                V                         |   |   |   (128 channels, 128x128) <- `d2`            |
+    |   (64 channels, 128x128)                 |   |   |                               |               |
+    |                |                         |   |   |                               |               |
+    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
+    |   `skip2` -> (128 channels, 128x128) ----|---|--> [Concatenate]                         |
+    |                |                         |   |   ^                                     |
+    |                V                         |   |   |                                     |
+    |           [MaxPool 2x2]                  |   |   [Up-Conv 2x2]                         |
+    |                |                         |   |   |                                     |
+    |                V                         |   |   |   (256 channels, 64x64) <- `b`          |
+    |   (128 channels, 64x64)                  |   |                                         |
+    |                                          |   |                                         |
+    +------------------------------------------+   |   +---------------------------------------------+
+                                                   |
+                                                   V
+                                   +----------------------------------+
+                                   | BOTTLENECK                       |
+                                   |                                  |
+                                   | [Conv Block x2, BatchNorm, ReLU] |
+                                   | `b` -> (256 channels, 64x64)     |
+                                   +----------------------------------+
+                                                   |
+                                                   V
+                                   +----------------------------------+
+                                   | OUTPUT                           |
+                                   |                                  |
+                                   | [1x1 Conv] -> (1 channel, 256x256)|
+                                   |      |                           |
+                                   |      V                           |
+                                   | [Sigmoid Activation]             |
+                                   +----------------------------------+
+                                                   |
+                                                   V
+                                        Final Mask (1, 256, 256)
 
 ###### Explanation of Each Step
 
