@@ -4,6 +4,7 @@ jupyter
 # for modeling
 torch
 torchvision
+torchinfo
 
 # for spiking neural network
 snntorch
@@ -19,3 +20,6 @@ rasterio
 
 #  for file path
 glob
+
+# for data augmentation
+albumentation
