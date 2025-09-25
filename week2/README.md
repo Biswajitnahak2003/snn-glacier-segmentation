@@ -45,10 +45,9 @@ DATALOADER:
   
   For ex- 
   
-      shuffle = True(this suffles data if true)
-      batch_size = integer(this tell how many data we are picking for training at once)
-      num_workers = integer(for parallel processing
-      )
+      shuffle = True # this suffles data if true
+      batch_size = integer # this tell how many data we are picking for training at once
+      num_workers = integer # for parallel processing
     
 ## Outcome
 #### We now have a train_loader and a val_loader that can efficiently feed batches of pre-processed, 5-channel image tensors and their corresponding masks to any PyTorch model.
