@@ -39,11 +39,15 @@ $ then we create an instance of our dataset and then create dataloader
 
 DATALOADER:
   This tells PyTorch how to batch, shuffle, and load multiple samples in parallel.
-  Basically we define this as a object of of pytorch's DataLoader, which shuld have dataset(which we defined earlier then some hyperparameters.
-  For ex- shuffle = True(this suffles data if true)
-  batch_size = integer(this tell how many data we are picking for training at once)
-  num_workers = integer(for parallel processing
-  )
+  
+  Basically we define this as a object of of pytorch's DataLoader, 
+  which shuld have dataset,which we defined earlier and some hyperparameters.
+  For ex- 
+    shuffle = True(this suffles data if true)
+    batch_size = integer(this tell how many data we are picking for training at once)
+    num_workers = integer(for parallel processing
+    )
+    
 ## Outcome
 #### We now have a train_loader and a val_loader that can efficiently feed batches of pre-processed, 5-channel image tensors and their corresponding masks to any PyTorch model.
 
