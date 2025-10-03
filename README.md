@@ -40,4 +40,4 @@ Week 5-8: Convert the U-Net to a Spiking U-Net (S-U-Net) using snnTorch, train i
 
 ## Author
     
-Biswajit Nahak (B.Tech | ETC | @IIIT Bhubaneswar)
+Biswajit Nahak | B.Tech | ETC | @IIIT Bhubaneswar
