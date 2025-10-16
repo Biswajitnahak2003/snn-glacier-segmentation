@@ -34,25 +34,25 @@ This diagram outlines the flow of a 5-channel satellite image through our U-Net 
                                                    V
     +------------------------------------------+   |   +---------------------------------------------+
     |           ENCODER (Contracting Path)       |   |   |           DECODER (Expanding Path)          |
-    |                                          |   |   |                                             |
-    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
-    |   `skip1` -> (64 channels, 256x256) -----|---|---|----------------------> [Concatenate] |
+    |                                          |   |   |                                               |
+    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]            |
+    |   `skip1` -> (64 channels, 256x256) -----|---|---|----------------------> [Concatenate]          |
     |                |                         |   |   |                               ^               |
     |                V                         |   |   |                               |               |
-    |           [MaxPool 2x2]                  |   |   |                      [Up-Conv 2x2]              |
+    |           [MaxPool 2x2]                  |   |   |                      [Up-Conv 2x2]            |
     |                |                         |   |   |                               |               |
-    |                V                         |   |   |   (128 channels, 128x128) <- `d2`            |
+    |                V                         |   |   |   (128 channels, 128x128) <- `d2`             |
     |   (64 channels, 128x128)                 |   |   |                               |               |
     |                |                         |   |   |                               |               |
-    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]          |
-    |   `skip2` -> (128 channels, 128x128) ----|---|--> [Concatenate]                         |
-    |                |                         |   |   ^                                     |
-    |                V                         |   |   |                                     |
-    |           [MaxPool 2x2]                  |   |   [Up-Conv 2x2]                         |
-    |                |                         |   |   |                                     |
-    |                V                         |   |   |   (256 channels, 64x64) <- `b`          |
-    |   (128 channels, 64x64)                  |   |                                         |
-    |                                          |   |                                         |
+    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]            |
+    |   `skip2` -> (128 channels, 128x128) ----|---|--> [Concatenate]                                  |
+    |                |                         |   |   ^                                               |
+    |                V                         |   |   |                                               |
+    |           [MaxPool 2x2]                  |   |   [Up-Conv 2x2]                                   |
+    |                |                         |   |   |                                               |
+    |                V                         |   |   |   (256 channels, 64x64) <- `b`                |
+    |   (128 channels, 64x64)                  |   |                                                   |
+    |                                          |   |                                                   |
     +------------------------------------------+   |   +---------------------------------------------+
                                                    |
                                                    V
