@@ -1,34 +1,43 @@
 # Week 3: Custom Architecture and Full Training Pipeline
 
-## 1. Theoretical Background
-### The U-Net Architecture
-For semantic segmentation, we require an output resolution equal to the input resolution. We implemented the **U-Net** architecture from scratch, which consists of:
-* **Contracting Path (Encoder):** Repeated application of convolutions and pooling to capture context ("What is present?").
-* **Expanding Path (Decoder):** Upsampling layers to restore spatial dimensions ("Where is it present?").
-* **Skip Connections:** The defining feature of U-Net. High-resolution features from the encoder are concatenated with the decoder, allowing the model to localize fine details (like narrow ice tongues) that would otherwise be lost.
+## 🧠 The Strategy: Why a Custom U-Net?
+This week, I moved from data preparation to the core of the project: the model itself. While transfer learning is popular, I decided to build a **Custom U-Net** from scratch.
 
-### Training Dynamics
-Training a neural network involves minimizing a loss function via Backpropagation.
-* **Loss Function:** We use **CrossEntropyLoss**, which calculates the divergence between the predicted class probabilities and the actual pixel labels.
-* **Optimization:** We utilize the **AdamW** optimizer, which decouples weight decay from the gradient update, offering better generalization than standard SGD.
+Why? Because standard pre-trained models (like ResNet) are designed for 3-channel RGB images (dogs, cats, cars). My satellite data has **5 spectral channels**. Hacking a pre-trained model to accept 5 channels often breaks the pre-learned weights in the first layer. By building from scratch, I created a network native to the domain.
 
-## 2. Implementation Details
-### Custom `GlacierNet` Architecture
-Instead of using a pre-trained black box, we built a modular CNN:
-1.  **`DoubleConv` Block:** A reusable module containing `Conv2d -> BatchNorm -> ReLU -> Conv2d -> BatchNorm -> ReLU`.
-2.  **Bottleneck:** A bridge connecting the encoder and decoder with the highest feature depth (512 channels).
-3.  **Input Adaptation:** The first layer was explicitly designed to accept **5 input channels**, avoiding the need for makeshift adapters.
 
-### The Training Loop
-We constructed a robust training loop (`train_one_epoch` and `validate`) that:
-1.  Iterates through the `DataLoader`.
-2.  Moves tensors to the GPU (CUDA).
-3.  Performs the Forward Pass and calculates Loss.
-4.  Performs Backpropagation and Weight Updates.
-5.  Calculates the **Matthews Correlation Coefficient (MCC)** during validation to monitor true model performance, as accuracy can be misleading in imbalanced datasets.
+
+[Image of U-Net architecture]
+
+
+### My Architecture Design (`GlacierNet`)
+I implemented the classic **U-Net** architecture, which is the gold standard for segmentation. It works on a simple principle:
+* **The Encoder (Contracting Path):** It aggressively downsamples the image to understand *what* is in it (context), sacrificing spatial resolution.
+* **The Decoder (Expanding Path):** It upsamples the features back to the original size to understand *where* the objects are (localization).
+* **Skip Connections:** This is the "secret sauce." I wired connections directly from the Encoder to the Decoder. This allows the model to recover fine details—like narrow ice tongues—that would otherwise be lost during downsampling.
+
+## 🛠️ Implementation Details
+
+### 1. Modular Components
+I structured the code modularly to make it clean and reusable:
+* **`DoubleConv` Block:** The building block of the network. It stacks `Conv2d -> BatchNorm -> ReLU` twice. This provides the non-linearity needed to learn complex features.
+* **The Bottleneck:** I designed a bridge connecting the encoder and decoder with 512 feature channels, forcing the model to compress the image content into a rich, abstract representation.
+* **Input Adaptation:** Unlike stock models, my first layer accepts **5 input channels**, allowing the model to learn directly from the Near-Infrared and Shortwave-Infrared bands.
+
+### 2. The Training Engine
+I constructed a robust training loop (`train_one_epoch` and `validate`) to handle the heavy lifting:
+* **Hardware Acceleration:** The script automatically detects and moves tensors to the GPU (CUDA) for faster computation.
+* **Optimization:** I chose the **AdamW** optimizer over standard SGD. It decouples weight decay from the gradient update, which generally leads to better generalization on unseen data.
+* **Loss Function:** I used **CrossEntropyLoss** to penalize the model for every pixel it misclassified.
+
+### 3. The "True" Metric: MCC
+Accuracy is a liar in satellite imagery. If 90% of an image is "Background" and 10% is "Glacier," a model that predicts "Background" for everything is 90% accurate but useless.
+
+To solve this, I implemented the **Matthews Correlation Coefficient (MCC)** tracking. MCC is a robust metric that only goes up if the model correctly predicts *both* the majority (background) and minority (glacier) classes.
 
 ---
-### License & Author
-**Author:** Biswajit Nahak  
-**Qualification:** B.Tech ETC @ IIIT BBSR  
-**License:** MIT License
+## 👤 Author
+**Biswajit Nahak** *B.Tech ETC @IIIT Bhubaneswar* [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
+
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).

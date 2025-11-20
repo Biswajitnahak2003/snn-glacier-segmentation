@@ -23,7 +23,7 @@ You can't train what you can't see. I wrote a script to sanity-check the data:
 ---
 ---
 ## 👤 Author
-**Biswajit Nahak** *B.Tech ETC Student at IIIT BBSR* [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
+**Biswajit Nahak** *B.Tech ETC @IIIT Bhubaneswar* [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
