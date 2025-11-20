@@ -1,122 +1,34 @@
-# Week 3: Baseline U-Net Model and updated week1 and week2 by adding data augmentation
-## Objective
-  The primary goal of this week was to define and verify the architecture for our baseline deep learning model, a U-Net. 
-  This model will serve as the performance benchmark that our final Spiking U-Net will be compared against.
-  This document also outlines the data augmentation strategy that was finalized in our data pipeline.
+# Week 3: Custom Architecture and Full Training Pipeline
 
-#### Part 1: Data Augmentation
-###### What is Data Augmentation?
-  Data Augmentation is a technique to artificially create new training data from existing data.
-  This is done by applying simple, random transformations like flipping or rotating the original images.
-  
-###### Why are we adding this for our dataset?
-  Our dataset is very small (only 25 images).
-  A deep learning model can easily "memorize" these few images, a problem known as overfitting.
-  When this happens, the model performs well on the data it has seen but fails completely on new, unseen images. 
-  Augmentation helps prevent this.
-  
-###### How are we adding it?
-  We use the powerful albumentations library inside our GlacierDataset class.
-  For each image in our training set, we randomly apply the following transformations on-the-fly:
+## 1. Theoretical Background
+### The U-Net Architecture
+For semantic segmentation, we require an output resolution equal to the input resolution. We implemented the **U-Net** architecture from scratch, which consists of:
+* **Contracting Path (Encoder):** Repeated application of convolutions and pooling to capture context ("What is present?").
+* **Expanding Path (Decoder):** Upsampling layers to restore spatial dimensions ("Where is it present?").
+* **Skip Connections:** The defining feature of U-Net. High-resolution features from the encoder are concatenated with the decoder, allowing the model to localize fine details (like narrow ice tongues) that would otherwise be lost.
 
-  - HorizontalFlip: Flips the image and mask left-to-right.
+### Training Dynamics
+Training a neural network involves minimizing a loss function via Backpropagation.
+* **Loss Function:** We use **CrossEntropyLoss**, which calculates the divergence between the predicted class probabilities and the actual pixel labels.
+* **Optimization:** We utilize the **AdamW** optimizer, which decouples weight decay from the gradient update, offering better generalization than standard SGD.
 
-  - VerticalFlip: Flips the image and mask upside-down.
+## 2. Implementation Details
+### Custom `GlacierNet` Architecture
+Instead of using a pre-trained black box, we built a modular CNN:
+1.  **`DoubleConv` Block:** A reusable module containing `Conv2d -> BatchNorm -> ReLU -> Conv2d -> BatchNorm -> ReLU`.
+2.  **Bottleneck:** A bridge connecting the encoder and decoder with the highest feature depth (512 channels).
+3.  **Input Adaptation:** The first layer was explicitly designed to accept **5 input channels**, avoiding the need for makeshift adapters.
 
-  - RandomRotate90: Randomly rotates the image and mask by 90, 180, or 270 degrees.
+### The Training Loop
+We constructed a robust training loop (`train_one_epoch` and `validate`) that:
+1.  Iterates through the `DataLoader`.
+2.  Moves tensors to the GPU (CUDA).
+3.  Performs the Forward Pass and calculates Loss.
+4.  Performs Backpropagation and Weight Updates.
+5.  Calculates the **Matthews Correlation Coefficient (MCC)** during validation to monitor true model performance, as accuracy can be misleading in imbalanced datasets.
 
-#### Part 2: U-Net Model Architecture
-
-This diagram outlines the flow of a 5-channel satellite image through our U-Net to produce the final 1-channel segmentation mask.
-
-                                         Input Image (5, 256, 256)
-                                                   |
-                                                   V
-    +------------------------------------------+   |   +---------------------------------------------+
-    |           ENCODER (Contracting Path)       |   |   |           DECODER (Expanding Path)          |
-    |                                          |   |   |                                               |
-    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]            |
-    |   `skip1` -> (64 channels, 256x256) -----|---|---|----------------------> [Concatenate]          |
-    |                |                         |   |   |                               ^               |
-    |                V                         |   |   |                               |               |
-    |           [MaxPool 2x2]                  |   |   |                      [Up-Conv 2x2]            |
-    |                |                         |   |   |                               |               |
-    |                V                         |   |   |   (128 channels, 128x128) <- `d2`             |
-    |   (64 channels, 128x128)                 |   |   |                               |               |
-    |                |                         |   |   |                               |               |
-    |   [Conv Block x2, BatchNorm, ReLU]       |   |   |   [Conv Block x2, BatchNorm, ReLU]            |
-    |   `skip2` -> (128 channels, 128x128) ----|---|--> [Concatenate]                                  |
-    |                |                         |   |   ^                                               |
-    |                V                         |   |   |                                               |
-    |           [MaxPool 2x2]                  |   |   [Up-Conv 2x2]                                   |
-    |                |                         |   |   |                                               |
-    |                V                         |   |   |   (256 channels, 64x64) <- `b`                |
-    |   (128 channels, 64x64)                  |   |                                                   |
-    |                                          |   |                                                   |
-    +------------------------------------------+   |   +---------------------------------------------+
-                                                   |
-                                                   V
-                                   +----------------------------------+
-                                   | BOTTLENECK                       |
-                                   |                                  |
-                                   | [Conv Block x2, BatchNorm, ReLU] |
-                                   | `b` -> (256 channels, 64x64)     |
-                                   +----------------------------------+
-                                                   |
-                                                   V
-                                   +----------------------------------+
-                                   | OUTPUT                           |
-                                   |                                  |
-                                   | [1x1 Conv] -> (1 channel, 256x256)|
-                                   |      |                           |
-                                   |      V                           |
-                                   | [Sigmoid Activation]             |
-                                   +----------------------------------+
-                                                   |
-                                                   V
-                                        Final Mask (1, 256, 256)
-
-###### Explanation of Each Step
-
-  ###### Encoder (Contracting Path):
-  - This is the left side of the "U". 
-  - Its job is to act like a feature extractor.
-  - It uses convolutional layers to find patterns (like textures and edges) and max pooling layers to shrink the image.
-  - As the image gets smaller, the network is forced to learn more abstract, high-level concepts about what is in the image, rather than just where it is.
-
-  ###### Bottleneck: 
-  - This is the lowest point of the "U".
-  - It holds the most compressed, high-level summary of the image content. 
-  - At this stage, the model has a strong semantic understanding of the scene (e.g., "this image contains a glacier and mountains").
-
-  ###### Decoder (Expanding Path):
-  - This is the right side of the "U". 
-  - Its job is to take the abstract summary from the bottleneck and "zoom in," using up-convolutional layers (ConvTranspose2d) to increase the image size back to the original. 
-  - This path rebuilds the image, but this time as a segmentation mask.
-
-  ###### Skip Connections:
-  - This is the most important feature of a U-Net.
-  - The horizontal arrows carry high-resolution feature maps from the encoder directly to the decoder.
-  - This is critical because the decoder needs to know precisely where to place the glacier boundaries. 
-  - The bottleneck provides the "what" (glacier), and the skip connection provides the "where" (the exact location and shape).
-
-  ###### Output Layer:
-  - After the final decoder block, we have a feature map with many channels (64 in our case).
-  - A final 1x1 Conv layer is used to collapse these 64 channels into a single output channel.
-  - A Sigmoid activation function is then applied to ensure the final output is a clean probability map, where each pixel's value is between 0 and 1. 
-
-###### How to Further Improve This Model
-  The current architecture is a strong and stable starting point. To improve performance in Week 4, we will explore the following professional techniques:
-
-  - Learning Rate Scheduler: Instead of a fixed learning rate, we will use a scheduler (like ReduceLROnPlateau). 
-  This will automatically lower the learning rate when the model's performance on the validation set stops improving, allowing for more precise fine-tuning.
-
-  - Advanced Loss Functions: While BCELoss is stable, a combined Dice Loss + BCELoss often yields better MCC scores for segmentation.
-  Dice Loss is excellent at handling class imbalance (e.g., if there are far more non-glacier pixels than glacier pixels).
-
-  - Hyperparameter Tuning: We can systematically experiment with different learning rates, batch sizes,
-  and even the depth of the U-Net (e.g., adding another encoder/decoder block) to find the optimal configuration for our specific dataset.
-
-#### Author 
-  Biswajit Nahak(B.Tech | ETC | @IIIT Bhubaneswar)
-  
+---
+### License & Author
+**Author:** Biswajit Nahak  
+**Qualification:** B.Tech ETC @ IIIT BBSR  
+**License:** MIT License
