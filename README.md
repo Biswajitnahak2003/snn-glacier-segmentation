@@ -12,11 +12,11 @@ This repository tracks the evolution of the project over several weeks of experi
 
 | Module | Focus Area | Key Technologies |
 | :--- | :--- | :--- |
-| **[Week 1](Week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
-| **[Week 2](Week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
-| **[Week 3](Week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
-| **[Week 4](Week4/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
-| **[Weeks 6 & 7](Weeks6_7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
+| **[Week 1](week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
+| **[Week 2](week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
+| **[Week 3](week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
+| **[Week 4](week4&5/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
+| **[Weeks 6 & 7](week6&7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
 
 ## 🔬 Methodology
 
