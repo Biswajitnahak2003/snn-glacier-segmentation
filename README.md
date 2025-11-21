@@ -1,43 +1,56 @@
-# SNN for Glacier Segmentation
+# Glacier Segmentation: A Neuromorphic vs. Traditional Deep Learning Study
 
-###  This project is a academic endeavor to develop a Spiking Neural Network (SNN) for the semantic segmentation of glaciers from multi-band satellite imagery. The primary goal is to create a computationally efficient model that leverages the low-latency, event-driven nature of SNNs.
+## 🌍 Project Overview
+Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Background, Debris, Ice, Snow).
 
-## Project Status
+The core objective of this research is to conduct a comparative study between two distinct paradigms of Deep Learning:
+1.  **Convolutional Neural Networks (CNNs):** The industry standard for high-precision image segmentation.
+2.  **Spiking Neural Networks (SNNs):** A bio-inspired approach where neurons communicate via binary "spikes," promising massive energy efficiency.
 
-Week 1 (Completed): Environment setup, data exploration, and development of a robust data loading pipeline using glob and rasterio to handle the multi-folder data structure.
+## 📂 Project Structure
+This repository tracks the evolution of the project over several weeks of experimentation.
 
-Week 2 (completed): Creation of a custom PyTorch Dataset and DataLoader to prepare the data for model training.
+| Module | Focus Area | Key Technologies |
+| :--- | :--- | :--- |
+| **[Week 1](Week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
+| **[Week 2](Week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
+| **[Week 3](Week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
+| **[Week 4](Week4/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
+| **[Weeks 6 & 7](Weeks6_7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
 
-week 3 (completed): Updated week1 and 2 files by adding data augmentation and created simple baseline u-net model
+## 🔬 Methodology
 
-## Dataset
-This project uses the proprietary dataset from the GlacierHack 2025 competition.
+### 1. The Data
+* **Input:** 5-Channel TIFs (R, G, B, NIR, SWIR).
+* **Output:** 4-Class Segmentation Masks.
+* **Preprocessing:** We implemented percentile clipping and min-max scaling to handle the high dynamic range of satellite sensors.
 
-Structure: The dataset consists of 25 multi-band satellite images. Each image is composed of 5 spectral bands, stored as separate .tif files in their respective folders (Band1 through Band5).
+### 2. The CNN Approach (Baseline)
+We established a high-performance baseline using U-Net architectures.
+* **Custom Models:** Built lightweight U-Nets from scratch to understand feature extraction.
+* **Transfer Learning:** Utilized VGG16 encoders pre-trained on ImageNet to leverage learned features, achieving high segmentation accuracy (~0.69 MCC).
 
-Labels: Ground truth segmentation masks are provided in the label folder.
+### 3. The SNN Approach (Experimental)
+We converted our architectures into the spiking domain using `snnTorch`.
+* **Temporal Coding:** Input data is repeated over time steps ($T$), allowing neurons to integrate signals and fire binary spikes.
+* **Surrogate Gradients:** We utilized surrogate functions (like `ATan`) to enable backpropagation through non-differentiable spikes.
+* **Optimization:** We tackled challenges like "Vanishing Spikes" in deep networks by implementing residual connections and fine-tuning neuron decay rates.
 
-Access: Due to its proprietary nature, the train/ directory is not included in this repository. To run this project, the train/ folder must be acquired and placed in the root of this project directory.
+## 🏆 Key Results
 
-## Progress
+### Accuracy vs. Efficiency
+* **Precision:** The CNN models consistently outperformed SNNs in pure segmentation accuracy (MCC), excelling at defining fine boundaries.
+* **Efficiency:** The SNN models demonstrated a **~14x theoretical improvement in energy efficiency**. By exploiting sparsity (only ~35% of neurons active), SNNs proved viable for edge deployment where power is limited, even if it comes with a trade-off in precision.
 
-The current codebase includes 3 Jupyter Notebooks:
-###### week1:
-    visual_1.ipynb: Tryig out visulization of one image.
-    week1_eda.ipynb: Demonstrates the initial exploratory data analysis and the core logic for loading and stacking the 5-band images from the complex file structure.
-###### week2:
-    week2_torchdataloader.ipynb: Created a function that takes images and their masks and returns pytorch tensor for training.
-###### week3:
-    updated_week1&2.ipynb: Adds data augmentation to our dataset by applying flip,rotate etc.
-    week3_baseline_unet.ipynb: Baseline u-net model architecture
-## Next Steps
+## 🛠️ Tech Stack
+* **Core:** Python, PyTorch
+* **Neuromorphic:** `snnTorch`
+* **Vision:** `OpenCV`, `Albumentations`, `Segmentation Models PyTorch`
+* **Analysis:** `Matplotlib`, `Scikit-Learn`
 
-Week 4: Train and evaluate the baseline U-Net to establish a performance benchmark (MCC score).
+---
+## 👤 Author
+**Biswajit Nahak** *B.Tech ETC @IIIT Bhubaneswar* [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
 
-Week 5-8: Convert the U-Net to a Spiking U-Net (S-U-Net) using snnTorch, train it, and compare its performance and efficiency against the baseline.
-
-....
-
-## Author
-    
-Biswajit Nahak | B.Tech | ETC | @IIIT Bhubaneswar
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
