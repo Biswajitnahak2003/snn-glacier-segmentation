@@ -1,9 +1,9 @@
 # Glacier Segmentation: A Neuromorphic vs. Traditional Deep Learning Study
 
 ## 🌍 Project Overview
-Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Background, Debris, Ice, Snow).
+Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Glacier, Debris, Lake, Non-glacier).
 
-The core objective of this research is to conduct a comparative study between two distinct paradigms of Deep Learning:
+The core objective of this Project is to conduct a comparative study between two distinct paradigms of Deep Learning:
 1.  **Convolutional Neural Networks (CNNs):** The industry standard for high-precision image segmentation.
 2.  **Spiking Neural Networks (SNNs):** A bio-inspired approach where neurons communicate via binary "spikes," promising massive energy efficiency.
 
