@@ -1,4 +1,4 @@
-# Week 4: Spiking Neural Networks & Energy Efficiency
+# Week 4 and week5: Spiking Neural Networks & Energy Efficiency
 
 ## 🧠 The Paradigm Shift: Why SNNs?
 After establishing a strong baseline with the Custom CNN in Week 3, I pivoted to the experimental core of this project: **Neuromorphic Computing**.
