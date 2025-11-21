@@ -2,7 +2,7 @@
 
 ## 🚀 Dealing with Satellite Imagery
 This week was all about setting up the data pipeline. Unlike standard RGB photos, the satellite images for this project are **5-Channel Multispectral TIFFs**. Working with them wasn't straightforward because:
-* **High Dynamic Range:** The sensors capture 16-bit floating-point data. If you try to open these in a standard image viewer, they look pitch black or washed out because they exceed the normal 0-255 color range.
+* **High Dynamic Range:** The sensors capture 16-bit floating-point data. If i try to open these in a standard image viewer, they look pitch black or washed out because they exceed the normal 0-255 color range.
 * **Multi-Dimensionality:** Standard libraries like PIL struggle with 5 channels, so I had to implement custom loading logic.
 
 ## 🛠️ My Implementation
