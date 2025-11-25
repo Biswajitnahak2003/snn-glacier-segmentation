@@ -21,19 +21,19 @@ This repository tracks the evolution of the project over several weeks of experi
 ## 🔬 Methodology
 
 ### 1. The Data
-* **Input:** 5-Channel TIFs (R, G, B, NIR, SWIR).
+* **Input:** 5-Channel TIFs (R, G, B, IR, UV).
 * **Output:** 4-Class Segmentation Masks.
-* **Preprocessing:** We implemented percentile clipping and min-max scaling to handle the high dynamic range of satellite sensors.
+* **Preprocessing:** I implemented percentile clipping and min-max scaling to handle the high dynamic range of satellite sensors.
 
 ### 2. The CNN Approach (Baseline)
-We established a high-performance baseline using U-Net architectures.
+I established a high-performance baseline using U-Net architectures.
 * **Custom Models:** Built lightweight U-Nets from scratch to understand feature extraction.
 * **Transfer Learning:** Utilized VGG16 encoders pre-trained on ImageNet to leverage learned features, achieving high segmentation accuracy (~0.69 MCC).
 
 ### 3. The SNN Approach (Experimental)
-We converted our architectures into the spiking domain using `snnTorch`.
+I converted our architectures into the spiking domain using `snnTorch`.
 * **Temporal Coding:** Input data is repeated over time steps ($T$), allowing neurons to integrate signals and fire binary spikes.
-* **Surrogate Gradients:** We utilized surrogate functions (like `ATan`) to enable backpropagation through non-differentiable spikes.
+* **Surrogate Gradients:** I utilized surrogate functions (like `ATan`) to enable backpropagation through non-differentiable spikes.
 * **Optimization:** We tackled challenges like "Vanishing Spikes" in deep networks by implementing residual connections and fine-tuning neuron decay rates.
 
 ## 🏆 Key Results
@@ -50,7 +50,7 @@ We converted our architectures into the spiking domain using `snnTorch`.
 
 ---
 ## 👤 Author
-**Biswajit Nahak** *B.Tech ETC @IIIT Bhubaneswar* [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
+**Biswajit Nahak** B.Tech ETC | @IIIT Bhubaneswar [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
