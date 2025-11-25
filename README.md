@@ -1,9 +1,9 @@
 # Glacier Segmentation: A Neuromorphic vs. Traditional Deep Learning Study
 
 ## 🌍 Project Overview
-Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Background, Debris, Ice, Snow).
+Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Glacier, Debris, Lake, Non-glacier).
 
-The core objective of this research is to conduct a comparative study between two distinct paradigms of Deep Learning:
+The core objective of this Project is to conduct a comparative study between two distinct paradigms of Deep Learning:
 1.  **Convolutional Neural Networks (CNNs):** The industry standard for high-precision image segmentation.
 2.  **Spiking Neural Networks (SNNs):** A bio-inspired approach where neurons communicate via binary "spikes," promising massive energy efficiency.
 
@@ -12,11 +12,11 @@ This repository tracks the evolution of the project over several weeks of experi
 
 | Module | Focus Area | Key Technologies |
 | :--- | :--- | :--- |
-| **[Week 1](Week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
-| **[Week 2](Week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
-| **[Week 3](Week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
-| **[Week 4](Week4/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
-| **[Weeks 6 & 7](Weeks6_7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
+| **[Week 1](week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
+| **[Week 2](week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
+| **[Week 3](week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
+| **[Week 4 & 5](week4&5/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
+| **[Weeks 6 & 7](week6&7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
 
 ## 🔬 Methodology
 
