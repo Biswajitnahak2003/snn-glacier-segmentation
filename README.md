@@ -36,21 +36,21 @@ I converted our architectures into the spiking domain using `snnTorch`.
 * **Surrogate Gradients:** I utilized surrogate functions (like `ATan`) to enable backpropagation through non-differentiable spikes.
 * **Optimization:** We tackled challenges like "Vanishing Spikes" in deep networks by implementing residual connections and fine-tuning neuron decay rates.
 
-## 🏆 Key Results
+## 🏆 Results
 
 ### Accuracy vs. Efficiency
 * **Precision:** The CNN models consistently outperformed SNNs in pure segmentation accuracy (MCC), excelling at defining fine boundaries.
 * **Efficiency:** The SNN models demonstrated a **~14x theoretical improvement in energy efficiency**. By exploiting sparsity (only ~35% of neurons active), SNNs proved viable for edge deployment where power is limited, even if it comes with a trade-off in precision.
 
 ## 🛠️ Tech Stack
-* **Core:** Python, PyTorch
+* **Core:** `Python`, `PyTorch`
 * **Neuromorphic:** `snnTorch`
 * **Vision:** `OpenCV`, `Albumentations`, `Segmentation Models PyTorch`
 * **Analysis:** `Matplotlib`, `Scikit-Learn`
 
 ---
 ## 👤 Author
-**Biswajit Nahak** | B.Tech ETC | @IIIT Bhubaneswar [GitHub Profile](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
+**Biswajit Nahak** | B.Tech ETC | @IIIT Bhubaneswar [GitHub](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
