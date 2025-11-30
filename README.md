@@ -51,7 +51,7 @@ I converted our architectures into the spiking domain using `snnTorch`.
 
 ## 🙏 Acknowledgements
 I would like to sincerely thank the **IEEE InGARSS 2025 Young Professionals Team** for providing the **GlacierHack 2025 dataset** and the opportunity to use it for academic research.
-* *Reference:* IEEE InGARSS 2025 Young Professionals Team. (2025). *GlacierHack 2025 Dataset: Multi-class Glacier Segmentation*.
+* *Reference:* IEEE InGARSS GlacierHack 2025.*
 
 ---
 ## 👤 Author
@@ -61,4 +61,3 @@ I would like to sincerely thank the **IEEE InGARSS 2025 Young Professionals Team
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
-*Note: The dataset used in this project is the property of IEEE InGARSS/GlacierHack and is used here for educational/academic purposes.*
