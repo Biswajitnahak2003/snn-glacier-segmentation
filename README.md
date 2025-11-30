@@ -21,6 +21,7 @@ This repository tracks the evolution of the project over several weeks of experi
 ## 🔬 Methodology
 
 ### 1. The Data
+* **Source:** The dataset utilized in this study was obtained from the **GlacierHack 2025** challenge, organized by the **IEEE InGARSS 2025 Young Professionals (YP) Team**.
 * **Input:** 5-Channel TIFs (R, G, B, IR, UV).
 * **Output:** 4-Class Segmentation Masks.
 * **Preprocessing:** I implemented percentile clipping and min-max scaling to handle the high dynamic range of satellite sensors.
@@ -48,9 +49,16 @@ I converted our architectures into the spiking domain using `snnTorch`.
 * **Vision:** `OpenCV`, `Albumentations`, `Segmentation Models PyTorch`
 * **Analysis:** `Matplotlib`, `Scikit-Learn`
 
+## 🙏 Acknowledgements
+I would like to sincerely thank the **IEEE InGARSS 2025 Young Professionals Team** for providing the **GlacierHack 2025 dataset** and the opportunity to use it for academic research.
+* *Reference:* IEEE InGARSS 2025 Young Professionals Team. (2025). *GlacierHack 2025 Dataset: Multi-class Glacier Segmentation*.
+
 ---
 ## 👤 Author
-**Biswajit Nahak** | B.Tech ETC | @IIIT Bhubaneswar [GitHub](https://github.com/Biswajitnahak2003) | [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
+**Biswajit Nahak** | B.Tech ETC | @IIIT Bhubaneswar
+* [GitHub Profile](https://github.com/Biswajitnahak2003)
+* [LinkedIn](https://www.linkedin.com/in/biswajit-nahak/)
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
+*Note: The dataset used in this project is the property of IEEE InGARSS/GlacierHack and is used here for educational/academic purposes.*
