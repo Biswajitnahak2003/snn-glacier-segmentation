@@ -13,3 +13,6 @@ pycache/
 
 # Ignore data folders
 train/
+
+# Ignore model files
+*.pth
