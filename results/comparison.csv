@@ -1,0 +1,19 @@
+Architecture,Model_Type,Backbone,MCC_Score,Parameters,Notes
+Custom_UNet,CNN,GlacierNet,0.6100,2M,Baseline custom model
+Custom_UNet,SNN,GlacierNet,0.5300,2M,Good efficiency but limited capacity
+UNet,CNN,VGG16,0.6926,14M,Best overall CNN accuracy (High Resolution Stem)
+UNet,SNN,VGG16,0.4462,14M,Failed due to lack of residual connections
+UNet,CNN,ResNet18,0.3100,11M,Underfitting
+UNet,SNN,ResNet18,0.3582,11M,Best SNN stability 
+UNet,CNN,ResNet34,0.6213,21M,Good balance
+UNet,SNN,ResNet34,0.3891,21M,Recovered via OneCycleLR tuning
+UNet,CNN,ResNet50,0.6686,25M,Strong CNN performance
+UNet,SNN,ResNet50,0.4731,25M,Depth caused signal degradation
+UNet,CNN,EfficientNet-B0,0.6754,5M,Excellent parameter efficiency
+UNet,SNN,EfficientNet-B0,0.1670,5M,Collapsed due to Attention (SE) blocks
+UNet,CNN,EfficientNet-V2-S,0.6692,20M,High accuracy
+UNet,SNN,EfficientNet-V2-S,0.5250,20M,Best Modern SNN (SE Removed)
+DeepLabV3+,CNN,ResNet50,0.6304,27M,Contextual model
+DeepLabV3+,SNN,ResNet50,0.3264,27M,Failed due to ASPP signal dilution
+DeepLabV3+,CNN,EfficientNet-B2,0.6424,9M,Good context capture
+DeepLabV3+,SNN,EfficientNet-B2,0.3429,9M,Failed due to ASPP signal dilution

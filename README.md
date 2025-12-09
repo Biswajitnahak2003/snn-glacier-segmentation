@@ -3,20 +3,21 @@
 ## 🌍 Project Overview
 Glaciers are critical indicators of climate change, but monitoring them requires precise segmentation of satellite imagery. This project utilizes **5-Channel Multi-Spectral Satellite Imagery** to perform 4-class semantic segmentation (Glacier, Debris, Lake, Non-glacier).
 
-The core objective of this Project is to conduct a comparative study between two distinct paradigms of Deep Learning:
+The core objective of this project is to conduct a comparative study between two distinct paradigms of Deep Learning:
 1.  **Convolutional Neural Networks (CNNs):** The industry standard for high-precision image segmentation.
 2.  **Spiking Neural Networks (SNNs):** A bio-inspired approach where neurons communicate via binary "spikes," promising massive energy efficiency.
 
 ## 📂 Project Structure
-This repository tracks the evolution of the project over several weeks of experimentation.
+This repository tracks 12 weeks of rigorous experimentation.
 
-| Module | Focus Area | Key Technologies |
+| Module | Focus Area | Key Outcome |
 | :--- | :--- | :--- |
-| **[Week 1](week1/)** | **Data Engineering** | Custom PyTorch Dataset, 5-Band TIF Loading, Robust Normalization |
-| **[Week 2](week2/)** | **Augmentation Pipeline** | `Albumentations`, Geometric Transforms, Mask Alignment |
-| **[Week 3](week3/)** | **Custom CNN Architecture** | Custom U-Net (`GlacierNet`), AdamW Optimizer, MCC Metric Tracking |
-| **[Week 4 & 5](week4&5/)** | **Spiking Neural Networks** | `snnTorch`, Leaky Integrate-and-Fire (LIF), Energy Efficiency Analysis |
-| **[Weeks 6 & 7](week6&7/)** | **Transfer Learning** | VGG16 Backbone, Pre-trained Weights, Deep SNN Conversion Challenges |
+| **[Week 1-3](week1/)** | **Foundations** | Built custom `GlacierNet` (0.61 MCC). Established 5-channel pipeline. |
+| **[Week 4-5](week4&5/)** | **SNN Basics** | Proved theoretical energy efficiency (14x) using `snnTorch` but struggled with accuracy. |
+| **[Week 6-7](week6&7/)** | **Transfer Learning** | **VGG16 (CNN)** set the all-time accuracy record (**0.69 MCC**). |
+| **[Week 8-9](week8&9/)** | **ResNet SNNs** | Discovered **ResNet50** as the best ResNet SNN (0.47 MCC), contradicting the "shallower is better" hypothesis. |
+| **[Week 10](week10/)** | **EfficientNet** | Proved that **EfficientNet-V2** works (0.52 MCC) only if Attention blocks are removed. |
+| **[Week 11-12](week11&12/)** | **DeepLabV3+** | Discovered that parallel branching (ASPP) dilutes spike signals, causing failure (0.34 MCC). |
 
 ## 🔬 Methodology
 
@@ -37,11 +38,33 @@ I converted our architectures into the spiking domain using `snnTorch`.
 * **Surrogate Gradients:** I utilized surrogate functions (like `ATan`) to enable backpropagation through non-differentiable spikes.
 * **Optimization:** We tackled challenges like "Vanishing Spikes" in deep networks by implementing residual connections and fine-tuning neuron decay rates.
 
-## 🏆 Results
+## 🏆 Final Results
 
-### Accuracy vs. Efficiency
-* **Precision:** The CNN models consistently outperformed SNNs in pure segmentation accuracy (MCC), excelling at defining fine boundaries.
-* **Efficiency:** The SNN models demonstrated a **~14x theoretical improvement in energy efficiency**. By exploiting sparsity (only ~35% of neurons active), SNNs proved viable for edge deployment where power is limited, even if it comes with a trade-off in precision.
+### 1. Accuracy Champions (MCC)
+* 🥇 **CNN - VGG16:** **0.6926** (Best Detail Preservation)
+* 🥈 **CNN - EfficientNet-V2:** 0.6692 (Best Parameter Efficiency)
+* 🥉 **SNN - EfficientNet-V2:** **0.5250** (Best Spiking Performance)
+
+### 2. Efficiency Champions (Theoretical Energy)
+* 🥇 **SNN - EfficientNet-V2:** ~25x efficiency gain vs VGG16 CNN.
+* 🥈 **SNN - ResNet50:** ~12x efficiency gain vs ResNet50 CNN.
+
+### 3. Full Comparison Table
+
+| Architecture | CNN Accuracy (MCC) | SNN Accuracy (MCC) | Verdict |
+| :--- | :--- | :--- | :--- |
+| **Custom U-Net** | 0.6100 | 0.5300 | Good baseline |
+| **VGG16** | **0.6926** | 0.4462 | Failed due to lack of residuals |
+| **ResNet18** | 0.5500 | 0.3500 | Underfitting |
+| **ResNet34** | 0.6213 | 0.3800 | Good balance |
+| **ResNet50** | 0.6686 | 0.4731 | Strong CNN, decent SNN |
+| **EfficientNet-V2** | 0.6692 | **0.5250** | **Best Modern SNN** (SE Removed) |
+| **DeepLabV3+** | 0.6424 | 0.3429 | Failed due to signal dilution |
+
+## 🔬 Scientific Conclusions
+1.  **Architecture Matters:** For SNNs, **"Simple is Better."** Complex branching (DeepLab) or Attention mechanisms (EfficientNet-B0) kill the binary signal. Simple, dense residual blocks (EffNet-V2) work best.
+2.  **Resolution is King:** VGG16 remains the CNN king because it preserves spatial resolution in the first layer, whereas ResNet/EfficientNet aggressively downsample the input, losing fine glacier cracks that cannot be recovered.
+3.  **Viability:** The SNN models demonstrated valid segmentation capabilities (~0.52 MCC) with **>90% energy savings**, making them viable for deployment on power-constrained edge devices like satellites and drones.
 
 ## 🛠️ Tech Stack
 * **Core:** `Python`, `PyTorch`
@@ -51,7 +74,7 @@ I converted our architectures into the spiking domain using `snnTorch`.
 
 ## 🙏 Acknowledgements
 I would like to sincerely thank the **IEEE InGARSS 2025 Young Professionals Team** for providing the **GlacierHack 2025 dataset** and the opportunity to use it for academic research.
-* *Reference:* IEEE InGARSS GlacierHack 2025.*
+* *Reference: IEEE InGARSS GlacierHack 2025.*
 
 ---
 ## 👤 Author
