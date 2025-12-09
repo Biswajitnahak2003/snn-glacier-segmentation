@@ -1,45 +1,34 @@
-# Weeks 8 & 9: The Residual Network Experiments
+# Weeks 8 & 9: The Residual Network Experiments (ResNet)
 
 ## 🧠 The Hypothesis: Solving "Vanishing Spikes"
 After the experiments with VGG16 in Weeks 6-7, I hit a major roadblock. While the VGG-CNN was excellent (0.69 MCC), the VGG-SNN performed poorly (0.44 MCC).
 
-My analysis pointed to the **"Vanishing Spike" Problem**.
-* In a deep Spiking Neural Network (SNN), binary signals (0s and 1s) degrade as they pass through many layers.
-* Without a path to preserve the signal, the deeper layers effectively stop firing, and the gradient cannot flow back during training.
+My analysis pointed to the **"Vanishing Spike" Problem**. In a deep Spiking Neural Network (SNN), binary signals degrade as they pass through many layers. Without a path to preserve the signal, the deeper layers effectively stop firing.
 
 **The Solution:** I turned to **ResNet (Residual Networks)**.
 
 The "Skip Connections" in ResNet act as highways for spikes, theoretically allowing the signal to bypass dead neurons and propagate deeper into the network.
 
 ## 🛠️ Implementation Details
-
-### Architecture Adaptation
-I integrated `torchvision`'s ResNet backbones into my Spiking U-Net framework. 
-1.  **Stem Modification:** ResNet's default input layer (7x7 Conv, Stride 2) creates aggressive downsampling. I modified this to handle the 5-channel satellite input while attempting to preserve spatial resolution.
-2.  **Spiking ResBlocks:** I replaced the standard ReLU activations inside the residual blocks with `Leaky Integrate-and-Fire (LIF)` neurons using `snnTorch`.
-3.  **Surrogate Gradients:** I tuned the `FastSigmoid` slope ($k=25$) to create a steeper gradient signal, helping the network learn faster.
-
-### The Experiments
-I created two distinct environments to test the "Depth vs. Accuracy" trade-off:
-* **`resnet18/`**: A moderately deep network (18 layers) to test stability.
-* **`resnet34/`**: A deeper variant (34 layers) to test capacity.
+I integrated `torchvision`'s ResNet backbones into my Spiking U-Net framework:
+1.  **Stem Modification:** ResNet's default input layer (7x7 Conv, Stride 2) creates aggressive downsampling. I modified this to handle the 5-channel satellite input.
+2.  **Spiking ResBlocks:** I replaced standard ReLU activations with `Leaky Integrate-and-Fire (LIF)` neurons.
+3.  **Tuning:** For the deeper models (34 & 50), I used a steeper surrogate gradient slope ($k=25$) and `OneCycleLR` scheduler to force signal propagation.
 
 ## 📊 Results & Analysis
 
-### 1. The "Sweet Spot" (ResNet18)
-* **CNN Baseline:** 0.55 MCC
-* **SNN Experimental:** **0.35 MCC**
-* **Verdict:** This was a breakthrough. The ResNet18 SNN matched its CNN counterpart perfectly. This proved that residual connections *do* solve the vanishing spike problem for moderately deep networks.
+I tested three depths to find the optimal balance for SNNs.
 
-### 2. The Depth Limit (ResNet34)
-* **CNN Baseline:** 0.62 MCC
-* **SNN Experimental:** 0.50 MCC (after heavy tuning)
-* **Verdict:** Here, we hit the limit. Despite the skip connections, the signal degraded too much across 34 layers. While I improved it from an initial 0.38 to 0.50 using `OneCycleLR` and steep gradients, it couldn't match the CNN's precision.
+| Architecture | CNN Baseline (MCC) | SNN Experimental (MCC) | Verdict |
+| :--- | :--- | :--- | :--- |
+| **ResNet18** | 0.55 | 0.35 | **Underfitting.** Too shallow to capture complex glacier features in the spiking domain. |
+| **ResNet34** | 0.62 | **0.50** | **🏆 The "Sweet Spot".** The best balance of depth and trainability. |
+| **ResNet50** | **0.67** | 0.47 | **Diminishing Returns.** The bottleneck structure helped the CNN, but the SNN struggled with the increased depth (50 layers). |
 
 ## 📉 Scientific Conclusion
-This two-week study yielded a critical finding for Neuromorphic Earth Observation: **"Less is More."**
-* For SNNs, the **ResNet18** architecture offered the best balance of accuracy and trainability.
-* Going deeper (ResNet34) yielded diminishing returns in the spiking domain, whereas it improved performance in the continuous (CNN) domain.
+This study yielded a critical finding: **Depth helps, but only up to a point.**
+1.  **The "Goldilocks" Zone:** Unlike VGG (0.44) or ResNet18 (0.35), **ResNet34 (0.50)** provided enough capacity to learn without being so deep that the spikes vanished.
+2.  **CNN vs. SNN:** The ResNet50 CNN (0.67) nearly matched the VGG16 baseline, proving that deep residual networks are excellent for this task *if* continuous activations are used. SNNs, however, struggle to utilize that depth.
 
 ---
 ### 👤 Author
